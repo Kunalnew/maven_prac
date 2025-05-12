@@ -1,1 +1,30 @@
-
+pipeline {
+    agent any
+ 
+    tools {
+        maven 'Maven_3.9.9'  // Ensure this matches the name of the Maven tool installed in Jenkins
+    }
+ 
+    environment {
+        GIT_REPO = 'https://github.com/Kunalnew/maven_prac.git'  // Your Git repo URL
+    }
+ 
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Clone the repository
+                git url: "${GIT_REPO}", branch: 'main'
+            }
+        }
+ 
+        stage('Build with Maven') {
+            steps {
+                // Navigate to the folder where pom.xml exists (e.g., 'demo')
+                dir('demo') {  // Adjust the folder name to match where your pom.xml is located
+                    // Run Maven build command
+                    sh 'mvn clean install'
+                }
+            }
+        }
+    }
+}
